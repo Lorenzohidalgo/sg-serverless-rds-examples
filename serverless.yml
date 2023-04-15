@@ -1,0 +1,24 @@
+service: sg-serverless-rds-examples
+frameworkVersion: "3"
+
+plugins:
+  - serverless-plugin-scripts
+
+provider:
+  name: aws
+  region: ${opt:region, "eu-central-1"}
+  stage: ${opt:stage, "dev"}
+
+custom:
+  DB_NAME: animals
+  DB_CLUSTER_NAME: animals-db-cluster
+  DB_USERNAME: adminuser
+  DB_PASSWORD: woofwoof123
+
+  scripts:
+    hooks:
+      'aws:deploy:finalize:cleanup': bash script.sh ${self:service}-${self:provider.stage} ${self:custom.DB_NAME} ${self:provider.region}
+
+resources:
+  - ${file(resources/networking_infra.yml)}
+  - ${file(resources/rds.yml)}

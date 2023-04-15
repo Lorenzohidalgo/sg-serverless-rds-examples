@@ -1,15 +1,12 @@
 {
-  "name": "single-point-processing-example",
+  "name": "sg-serverless-rds-examples",
   "version": "1.0.0",
   "description": "Serverless Framework Node SQS Producer-Consumer on AWS",
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "serverless": "^3.29.0",
-    "serverless-lift": "^1.1.2"
-  },
-  "dependencies": {
-    "@aws-sdk/client-rekognition": "^3.301.0",
+    "serverless-lift": "^1.1.2",
     "serverless-plugin-scripts": "^1.0.2"
   }
 }

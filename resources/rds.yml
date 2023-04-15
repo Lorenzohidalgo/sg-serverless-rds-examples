@@ -1,0 +1,27 @@
+Resources:
+  RDSCluster:
+    Type: "AWS::RDS::DBCluster"
+    Properties:
+      Engine: aurora
+      EngineVersion: "5.6.10a"
+      EngineMode: serverless
+      DBClusterIdentifier: ${self:custom.DB_CLUSTER_NAME}
+      MasterUsername: ${self:custom.DB_USERNAME}
+      MasterUserPassword: ${self:custom.DB_PASSWORD}
+      DBSubnetGroupName: !Ref RdsSubnetGroup
+      AvailabilityZones:
+        - !Select [0, !GetAZs ""]
+        - !Select [1, !GetAZs ""]
+      DatabaseName: ${self:custom.DB_NAME}
+      EnableHttpEndpoint: true
+  RDSSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      SecretString: '{"username":"${self:custom.DB_USERNAME}", "password":"${self:custom.DB_PASSWORD}"}'
+Outputs:
+  RDSClusterArn:
+    Value: !Sub "arn:${AWS::Partition}:rds:${AWS::Region}:${AWS::AccountId}:cluster:${RDSCluster}"
+  RDSAnimalsDB:
+    Value: ${self:custom.DB_NAME}
+  RDSSecretArn:
+    Value: !Ref RDSSecret
